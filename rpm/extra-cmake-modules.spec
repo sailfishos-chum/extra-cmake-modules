@@ -1,5 +1,5 @@
 Name:        opt-extra-cmake-modules
-Version:     5.104.0
+Version: 5.105.0
 Release:     1
 Summary:     The Extra CMake Modules package
 License:     BSD
