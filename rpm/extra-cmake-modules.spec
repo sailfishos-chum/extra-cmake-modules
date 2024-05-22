@@ -1,5 +1,5 @@
 Name:        opt-extra-cmake-modules
-Version: 5.108.0
+Version:     5.116.0
 Release:     1
 Summary:     The Extra CMake Modules package
 License:     BSD
@@ -24,7 +24,7 @@ export QTDIR=%{_opt_qt5_prefix}
 %make_build
 
 %install
-make DESTDIR=%{buildroot} install
+%make_install 
 
 %files
 %license COPYING-CMAKE-SCRIPTS
