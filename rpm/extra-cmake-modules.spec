@@ -14,6 +14,19 @@ The Extra CMake Modules package, or ECM, adds to the modules provided by CMake, 
 used by find_package() to find common software, ones that can be used directly in CMakeLists.txt
 files to perform common tasks and toolchain files that must be specified on the commandline by the user.
 
+
+# define macros for SFOS 4.5 and lower, where the cmake package does not have them:
+# these defines are taken from https://github.com/sailfishos/cmake/blob/master/rpm/macros.cmake.in
+%if %{undefined _cmake_version}
+#%%define __cmake_in_source_build 1
+%define _vpath_srcdir .
+%define _vpath_builddir %{_target_platform}
+%define __cmake_builddir %{!?__cmake_in_source_build:%{_vpath_builddir}}%{?__cmake_in_source_build:.}
+%define cmake_build %__cmake --build "%{__cmake_builddir}" %{?_smp_mflags} --verbose
+%define cmake_install DESTDIR="%{buildroot}" %__cmake --install "%{__cmake_builddir}"
+%endif
+
+
 %prep
 %autosetup -n %{name}-%{version}/upstream
 
@@ -21,11 +34,10 @@ files to perform common tasks and toolchain files that must be specified on the 
 export QTDIR=%{_opt_qt5_prefix}
 
 %{_opt_cmake_kf5}
-%make_build %{?__cmake_builddir:-C "%{__cmake_builddir}"}
+%cmake_build
 
 %install
-%{?__cmake_builddir: pushd %{__cmake_builddir}}
-%make_install
+%cmake_install
 
 %files
 %license COPYING-CMAKE-SCRIPTS
