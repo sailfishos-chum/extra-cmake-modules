@@ -21,10 +21,11 @@ files to perform common tasks and toolchain files that must be specified on the 
 export QTDIR=%{_opt_qt5_prefix}
 
 %{_opt_cmake_kf5}
-%make_build
+%make_build %{?__cmake_builddir:-C "%{__cmake_builddir}"}
 
 %install
-%make_install 
+%{?__cmake_builddir: pushd %{__cmake_builddir}}
+%make_install
 
 %files
 %license COPYING-CMAKE-SCRIPTS
